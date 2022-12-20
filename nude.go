@@ -3,6 +3,8 @@ package nude
 import (
 	"fmt"
 	"image"
+	"image/color"
+	"image/draw"
 	"math"
 	"net/http"
 	"path/filepath"
@@ -63,6 +65,41 @@ type Detector struct {
 func NewDetector(img image.Image) *Detector {
 	d := &Detector{image: img}
 	return d
+}
+
+func (d *Detector) DrawImageAndRegions(regions Regions) (*image.RGBA, error) {
+	img := d.image
+	dstImg := image.NewRGBA(img.Bounds())
+	draw.Draw(dstImg, img.Bounds(), img, image.ZP, draw.Src)
+
+	for i := 0; i < len(regions); i++ {
+		minX, minY := 1000000, 1000000
+		maxX, maxY := -1, -1
+		for _, skinMap := range regions[i] {
+			x := skinMap.X
+			y := skinMap.Y
+			if minX > x {
+				minX = x
+			}
+			if minY > y {
+				minY = y
+			}
+			if maxX < x {
+				maxX = x + 500
+			}
+			if maxY < y {
+				maxY = y + 500
+			}
+		}
+
+		m := image.NewRGBA(image.Rect(minX, minY, maxX, maxY))
+		blue := color.RGBA{0, 0, 255, 255}
+		draw.Draw(dstImg, m.Bounds(), &image.Uniform{blue}, image.ZP, draw.Src)
+	}
+
+
+
+	return dstImg, nil
 }
 
 func (d *Detector) Parse() (result bool, err error) {

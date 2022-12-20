@@ -1,3 +1,3 @@
-module github.com/ElegantSoft/go-nude
+module github.com/beezrathashem/kosher-fill
 
 go 1.14
