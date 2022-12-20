@@ -67,6 +67,23 @@ func NewDetector(img image.Image) *Detector {
 	return d
 }
 
+
+func (d *Detector) FillSkinPixels(regions Regions) (*image.RGBA, error) {
+	img := d.image
+	dstImg := image.NewRGBA(img.Bounds())
+	draw.Draw(dstImg, img.Bounds(), img, image.ZP, draw.Src)
+
+	for i := 0; i < len(regions); i++ {
+		blue := color.RGBA{0, 0, 255, 255}
+		for _, pixel := range regions[i] {
+			dstImg.Set(pixel.X, pixel.Y, blue)
+		}
+	}
+
+	return dstImg, nil
+}
+
+
 func (d *Detector) DrawImageAndRegions(regions Regions) (*image.RGBA, error) {
 	img := d.image
 	dstImg := image.NewRGBA(img.Bounds())
