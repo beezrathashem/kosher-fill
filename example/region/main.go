@@ -42,7 +42,7 @@ func drawImageAndRegions(imagePath string, regions nude.Regions) {
 			}
 		}
 		m := image.NewRGBA(image.Rect(minX, minY, maxX, maxY))
-		blue := color.RGBA{0, 0, 255, 255}
+		blue := color.RGBA{64, 64, 64, 255}
 		draw.Draw(dstImg, m.Bounds(), &image.Uniform{blue}, image.ZP, draw.Src)
 	}
 

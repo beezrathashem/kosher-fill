@@ -23,7 +23,7 @@ func fillSkinPixels(imagePath string, regions nude.Regions) {
 	draw.Draw(dstImg, img.Bounds(), img, image.ZP, draw.Src)
 
 	for i := 0; i < len(regions); i++ {
-		blue := color.RGBA{0, 0, 255, 255}
+		blue := color.RGBA{64, 64, 64, 255}
 		for _, pixel := range regions[i] {
 			dstImg.Set(pixel.X, pixel.Y, blue)
 		}
